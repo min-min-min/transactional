@@ -10,14 +10,11 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * e.g
- *     @MultiTransactional(datasourceNames = {"coreDatasource", "userDatasource"})
- *     public void test() {
- *         chatListService.save();
- *         uUserBasicService.save();
- *     }
+ * 开启多数据源事务管理
+ *
  * @author Chenjing
  * @date 2020/9/17
+ * @see MultiTransactional
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

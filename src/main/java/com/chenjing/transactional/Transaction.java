@@ -1,6 +1,6 @@
 package com.chenjing.transactional;
 
-import java.sql.Connection;
+import javax.sql.DataSource;
 import java.sql.SQLException;
 
 /**
@@ -9,9 +9,9 @@ import java.sql.SQLException;
  */
 public interface Transaction {
 
-    void commit(Connection[] connections) throws SQLException;
+    void commit(DataSource[] dataSources) throws SQLException;
 
-    void beginTransaction(Connection[] connections) throws SQLException;
+    void beginTransaction(DataSource[] dataSources) throws SQLException;
 
-    void rollback(Connection[] connections) throws SQLException;
+    void rollback(DataSource[] dataSources) throws SQLException;
 }
