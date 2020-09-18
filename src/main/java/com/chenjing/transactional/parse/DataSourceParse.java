@@ -8,7 +8,7 @@ import javax.sql.DataSource;
  * @author Chenjing
  * @date 2020/9/18
  */
-public interface DatasourceParse {
+interface DataSourceParse {
 
-    DataSource[] parse(MultiTransactional multiTransactional);
+    DataSource[] doParse(MultiTransactional multiTransactional);
 }

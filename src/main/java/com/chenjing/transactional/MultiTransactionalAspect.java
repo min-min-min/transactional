@@ -1,6 +1,6 @@
 package com.chenjing.transactional;
 
-import com.chenjing.transactional.parse.DefaultDatasourceParse;
+import com.chenjing.transactional.parse.DataSourceParseSummary;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -8,6 +8,9 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.transaction.support.TransactionSynchronization;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
@@ -23,7 +26,9 @@ import java.util.List;
  * @date 2020/9/17
  */
 @Aspect
-public class MultiTransactionalAspect implements Transaction {
+public class MultiTransactionalAspect implements Transaction, ApplicationContextAware {
+
+    private ApplicationContext applicationContext;
 
     private static final Logger log = LoggerFactory.getLogger(MultiTransactionalAspect.class);
 
@@ -36,7 +41,8 @@ public class MultiTransactionalAspect implements Transaction {
         log.debug("Into multi transactional aspect point cut...");
         MethodSignature signature = (MethodSignature) point.getSignature();
         MultiTransactional transactional = signature.getMethod().getAnnotation(MultiTransactional.class);
-        DataSource[] dataSources = new DefaultDatasourceParse().parse(transactional);
+        DataSource[] dataSources = new DataSourceParseSummary(applicationContext).parse(transactional);
+
         Object result;
         List<TransactionSynchronization> synchronizations = Collections.emptyList();
         try {
@@ -93,5 +99,10 @@ public class MultiTransactionalAspect implements Transaction {
         for (Connection connection : connections) {
             connection.rollback();
         }
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = applicationContext;
     }
 }
