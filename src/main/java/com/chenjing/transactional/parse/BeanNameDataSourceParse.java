@@ -19,7 +19,8 @@ class BeanNameDataSourceParse implements DataSourceParse {
 
     @Override
     public DataSource[] doParse(MultiTransactional multiTransactional) {
-        String[] datasourceNames = multiTransactional.datasourceBeanNames();
+        String[] datasourceNames = multiTransactional.datasourceBeanNames().length == 0 ?
+                multiTransactional.value() : multiTransactional.datasourceBeanNames();
         if (datasourceNames.length == 0) {
             throw new NotFoundDataSourceException();
         }
