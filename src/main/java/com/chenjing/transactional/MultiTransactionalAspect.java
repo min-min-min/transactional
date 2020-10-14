@@ -69,7 +69,7 @@ public class MultiTransactionalAspect implements Transaction, ApplicationContext
         Connection[] connections = new Connection[dataSources.length];
 
         for (int i = 0; i < dataSources.length; i++) {
-            Connection connection = DataSourceUtils.getConnection(dataSources[0]);
+            Connection connection = DataSourceUtils.getConnection(dataSources[i]);
             connections[i] = connection;
         }
         return connections;
